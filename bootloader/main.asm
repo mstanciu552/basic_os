@@ -1,5 +1,4 @@
 [org 0x7c00]
-; Error - blinking screen
 
 KERNEL_OFFSET equ 0x1000
 
@@ -22,6 +21,7 @@ jmp $
 %include "gdt.asm"
 %include "switch_to_pm.asm"
 %include "print_string_pm.asm"
+%include "clear_screen.asm"
 
 [bits 16]
 
@@ -38,6 +38,8 @@ load_kernel:
 
 [bits 32]
 BEGIN_PM:
+  ; call clear_screen
+
   mov ebx, MSG_PROT_MODE
   call print_string_pm
   
@@ -47,8 +49,9 @@ BEGIN_PM:
 
 DISK_ERR_MSG db "Error loading from hard disk    ", 0x0a, 0x0d, 0
 MSG_REAL_MODE db "Started in 16-bit real mode    ", 0x0a, 0x0d, 0
-MSG_PROT_MODE db "Succesfully switched to 32-bit protected mode    ", 0x0a, 0x0d, 0
+MSG_PROT_MODE db "Succesfully switched to 32-bit protected mode    ", 0
 MSG_LOAD_KERNEL db "Loaded Kernel into memory     ", 0x0a, 0x0d, 0
+WHITE_SPACE db " ", 0
 
 BOOT_DRIVE: db 0
 
