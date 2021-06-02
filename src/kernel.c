@@ -13,6 +13,7 @@ void main(void) {
     volatile char_with_attribute *video_memory = (void*)VIDEO_MEMORY;
     const char* str = "Hello World!";
 
+    clear_screen();
     print_ch(str);
 }
 

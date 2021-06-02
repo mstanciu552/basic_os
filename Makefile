@@ -18,15 +18,15 @@ run: image
 	qemu-system-x86_64 $< 
 
 %.o: src/%.c ${HEADERS}
-	gcc -m32 -I../headers/ -ffreestanding  -c $< -o build/$@
+	gcc -fno-pie -m32 -I../headers/ -ffreestanding  -c $< -o build/$@
 
 %.o: bootloader/%.asm
 	nasm $<  -felf32 -o build/$@
 
-kernel.bin: ${OBJ} build/kernel_entry.o
-	ld -melf_i386 -o $@ -T link.ld $^ --oformat binary 
+kernel.bin: build/kernel_entry.o 
+	ld -melf_i386 -o $@ -T link.ld build/kernel.o build/screen.o build/mem.o $^ --oformat binary 
 
 image: boot_sect.bin kernel.bin
 	cat $^ > image
 
-build: clean boot_sect.bin kernel.o kernel_entry.o kernel.bin image
+build: clean boot_sect.bin mem.o screen.o kernel.o kernel_entry.o kernel.bin image
