@@ -18,7 +18,7 @@ run: image
 	qemu-system-x86_64 $< 
 
 %.o: src/%.c ${HEADERS}
-	gcc -fno-pie -m32 -I../headers/ -ffreestanding  -c $< -o build/$@
+	gcc -fno-pie -m32 -std=c11 -Wall -Wextra -pedantic -I../headers/ -ffreestanding  -c $< -o build/$@
 
 %.o: bootloader/%.asm
 	nasm $<  -felf32 -o build/$@

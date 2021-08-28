@@ -1,14 +1,5 @@
 #include "../headers/screen.h"
 
-long unsigned int str_len(char* str) {
-  long unsigned int c = 0;
-  while(*str != '\0') {
-    c++;
-    str++;
-  }
-  return c;
-}
-
 unsigned short get_screen_offset(int cols, int rows) {
   return 2 * (rows * MAX_COLS + cols);
 }
@@ -63,7 +54,11 @@ void print_at(char* message, int cols, int rows) {
 
   int i = 0;
   while (message[i] != 0) {
-    print_char(message[i++], rows, cols, WHITE_ON_BLACK);
+    print_char(message[i++], cols++, rows, WHITE_ON_BLACK);
+    if (cols > MAX_COLS) {
+      rows ++;
+      cols = 0;
+    }
   }
 }
 
