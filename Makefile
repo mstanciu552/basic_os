@@ -1,3 +1,5 @@
+CFLAGS = -Wall -Wextra -pedantic -ggdb
+
 C_SOURCES = $(wildcard src/*.c)
 HEADERS = $(wildcard headers/*.h)
 
@@ -18,7 +20,7 @@ run: image
 	qemu-system-x86_64 $< 
 
 %.o: src/%.c ${HEADERS}
-	gcc -fno-pie -m32 -std=c11 -Wall -Wextra -pedantic -I../headers/ -ffreestanding  -c $< -o build/$@
+	gcc -fno-pie -m32 $(CFLAGS) -I../headers/ -ffreestanding  -c $< -o build/$@
 
 %.o: bootloader/%.asm
 	nasm $<  -felf32 -o build/$@
@@ -29,4 +31,4 @@ kernel.bin: build/kernel_entry.o
 image: boot_sect.bin kernel.bin
 	cat $^ > image
 
-build: clean boot_sect.bin mem.o screen.o kernel.o kernel_entry.o kernel.bin image
+build: clean boot_sect.bin interrupt.o mem.o screen.o idt.o isr.o keyboard.o kernel.o kernel_entry.o kernel.bin image

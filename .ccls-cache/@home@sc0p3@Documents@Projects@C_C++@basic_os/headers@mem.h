@@ -1,8 +1,10 @@
 #ifndef MEM_H_
 #define MEM_H_
 
-typedef unsigned char uint8_t;
-typedef unsigned short uint16_t;
+#include <stdint.h>
+
+#define low_16(addr) (uint16_t)((addr) & 0xFFFF)
+#define high_16(addr) (uint16_t)((addr >> 16) & 0xFFFF)
 
 unsigned char *memory_cpy(unsigned char*, const unsigned char*, int, int);
 unsigned char port_byte_in(unsigned short);
